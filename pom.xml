@@ -16,11 +16,7 @@
 		<java.version>11</java.version>
 	</properties>
 	<dependencies>
-		<!--	Thymleaf security	-->
-		<dependency>
-			<groupId>org.thymeleaf.extras</groupId>
-			<artifactId>thymeleaf-extras-springsecurity5</artifactId>
-		</dependency>
+
 		<!--	Java 8 Date/time	-->
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
