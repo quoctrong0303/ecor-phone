@@ -1,0 +1,61 @@
+/* Personal CSS */
+
+
+
+/* Khi tồn tại cả 2 class toggle-list và show thì class items
+sẽ được css như bên dưới (điều kiện là items phải là con của 2 class kia)
+*/
+.toggle-list.show .items {
+    display: block;
+}
+/* Khi tồn tại cả 2 class toggle-list và hide thì class items
+sẽ được css như bên dưới (điều kiện là items phải là con của 2 class kia)
+*/
+.toggle-list.hide .items {
+    display: none;
+}
+
+.toggle-list.show .arrow-down {
+    display: inline-block;
+}
+
+.toggle-list.show .arrow-right {
+    display: none
+}
+
+
+
+.toggle-list.hide .arrow-down {
+    display: none;
+}
+
+.toggle-list.hide .arrow-right {
+    display: inline-block;
+}
+
+/* Form validate CSS */
+
+.form-group.invalid input {
+    border: 1px solid red;
+}
+
+.form-group.valid input {
+    border: 1px solid green;
+}
+
+/* Splidejs library */
+
+#main-carousel .splide__slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    padding: 16px;
+  }  
+
+#thumbnail-carousel .splide__slide img{
+    padding: 4px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: 1px solid #ccc;
+}

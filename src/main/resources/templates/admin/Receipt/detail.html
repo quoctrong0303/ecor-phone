@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="scroll-smooth dark"
+	lang="en">
+
+<head th:replace="~{/fragments/_layout.html :: head}">
+</head>
+
+<body class="bg-slate-100">
+
+	<!-- Receipt detail -->
+	<div
+		class="bg-white fixed top-0 right-0 left-0 bottom-0 z-[99999999] flex justify-center grayscale  overflow-y-auto">
+		<div class="w-[800px] p-4 relative">
+			<div class="row items-center">
+				<div class="col l-8">
+					<h3 class="font-mono text-[32px] uppercase font-bold">đơn nhập
+						hàng</h3>
+				</div>
+				<div class="col l-4">
+					<img class="w-[80px] object-contain" th:src="@{/file/logo.png}"
+						alt="">
+				</div>
+			</div>
+			<div class="mt-[24px] row items-center">
+				<div class="col l-6 font-semibold">
+					<div class="">
+						<p class="inline-block">Cửa hàng:</p>
+						<span class="font-normal text-[12px]"
+							th:text="${receipt.getStore().getName()}"></span>
+					</div>
+					<div class="">
+						<p class="inline-block">SĐT:</p>
+						<span class="font-normal text-[12px]"
+							th:text="${receipt.getStore().getNumberphone()}"></span>
+					</div>
+					<div>
+						<p class="inline-block">Địa chỉ:</p>
+						<span class="font-normal text-[12px]"
+							th:text="${receipt.getStore().getAddress()}"></span>
+					</div>
+					<div>
+						<p class="inline-block">Website:</p>
+						<span class="font-normal text-[12px]">
+							https://mywebsite.com</span>
+					</div>
+				</div>
+				<div class="col l-6 font-semibold">
+					<div class="">
+						<p class="inline-block">Nhà cung cấp:</p>
+						<span class="font-normal text-[12px]"
+							th:text="${receipt.getSupplier().getName()}"></span>
+					</div>
+					<div class="">
+						<p class="inline-block">SĐT:</p>
+						<span class="font-normal text-[12px]"
+							th:text="${receipt.getSupplier().getNumberphone()}"></span>
+					</div>
+					<div>
+						<p class="inline-block">Địa chỉ:</p>
+						<span class="font-normal text-[12px]"
+							th:text="${receipt.getSupplier().getAddress()}"></span>
+					</div>
+				</div>
+			</div>
+
+			<table
+				class="w-full mt-[32px] border-collapse border border-slate-500">
+				<thead>
+					<tr
+						class="border border-solid border-slate-500 uppercase font-bold">
+						<th class="bg-slate-300 p-1">STT</th>
+						<th class="bg-slate-300 p-1">sản phẩm</th>
+						<th class="bg-slate-300 p-1">số lượng</th>
+						<th class="bg-slate-300 p-1">đơn giá</th>
+						<th class="bg-slate-300 p-1">thành tiền</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="item : ${receipt.getReceiptDetails()}">
+						<td
+							class="px-2 py-1 border-solid border border-slate-500 text-center">1</td>
+						<td class="px-2 py-1 border-solid border border-slate-500"
+							th:text="${item.getProductOption().getDisplayName()}"></td>
+						<td class="px-2 py-1 border-solid border border-slate-500"
+							th:text="${item.getQuantity()}"></td>
+						<td class="px-2 py-1 border-solid border border-slate-500"
+							th:text="${item.getFormatedPrice()}"></td>
+						<td class="px-2 py-1 border-solid border border-slate-500"
+							th:text="${item.getFormatedTotalPrice()}"></td>
+					</tr>
+
+				</tbody>
+			</table>
+
+			<div class="row mt-3">
+				<div class="col l-6">
+					<span>Tổng cộng:</span><span
+						class="ml-2 p-1 border border-solid border-slate-400"
+						th:text="${receipt.getFormatedTotalPrice()}"></span>
+				</div>
+			</div>
+			<div class="row mt-3">
+				<div class="col l-o-6 l-6">
+					<span class="italic font-thin">Ngày <span
+						th:text="${receipt.getDay()}"></span> tháng <span
+						th:text="${receipt.getMonth()}"></span> năm <span th:text="${receipt.getYear()}"></span>
+					</span>
+				</div>
+			</div>
+			<div class="row mt-[100px]">
+				<div class="col l-o-2 l-8 text-center p-5">
+					<span class="p-3 text-[12px] rounded-full bg-slate-200">Cảm
+						ơn quý khách đã sử dụng dịch vụ của chúng tôi!</span>
+				</div>
+			</div>
+			<div class="absolute top-[5%] right-0">
+				<a href="/admin/receipt"><i title="Ẩn"
+					class="fas fa-times p-1 hover:cursor-pointer hover:scale-110"></i></a>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+</html>

@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="scroll-smooth dark"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	lang="en">
+
+<head th:replace="~{/fragments/_layout.html :: head}">
+</head>
+
+<body>
+	</div>
+	<div class="app overflow-hidden">
+		<!-- Arrow up -->
+		<aside th:replace="~{/fragments/_layout.html :: arrow-up}"></aside>
+		<!-- Header -->
+		<header th:replace="~{/fragments/user_layout.html :: header}">
+		</header>
+
+		<nav th:replace="~{/fragments/user_layout.html :: navbar}"></nav>
+
+		<!-- Main content -->
+		<main class="mb-4">
+			<div class="bg-gradient-to-tl from-white to-yellow-100 p-5">
+				<div class="grids wide min-h-screen">
+					<div class="row">
+						<div class="col l-12 md-12 c-12">
+							<div
+								class="w-full h-[100px] flex items-center justify-center flex-col bg-yellow-400">
+								<span class="text-black font-semibold text-[16px]">TỔNG
+									TIỀN: <span th:text="${@cartService.getFormatedTotal()}"></span>
+								</span> <span class="text-black uppercase font-semibold text-[16px]">Số
+									lượng sản phẩm: <span th:text="${@cartService.getCount()}"></span>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="row py-5">
+						<div class="col l-6 c-12 md-12">
+							<div sec:authorize="isAuthenticated()"
+								class="p-1 flex justify-center items-center">
+								<h3 class="font-semibold text-[24px] uppercase">Thông tin
+									khách hàng</h3>
+								<a class="ml-2 text-blue-600 underline" href="/profile">thay
+									đổi</a>
+							</div>
+							<div sec:authorize="!isAuthenticated()"
+								class="p-1 flex justify-center items-center">
+								<h3 class="font-semibold text-[24px] uppercase">Vui lòng
+									đăng nhập để thanh toán</h3>
+								<a th:href="@{/login}" class="ml-2 text-blue-600 underline"
+									href="">đăng nhập</a>
+							</div>
+							<form method="post" sec:authorize="isAuthenticated()" id="fCheckout" th:action="@{/checkout}"
+								class="p-5 shadow-lg">
+								<div class="form-group row my-4">
+									<label class="col l-4 md-12" for="fullname">Họ tên:</label><input
+										th:value="${#authentication.principal.user.fullname}" disabled
+										type="text" name="fullname"
+										class="focus:outline-none focus:border-[1px] focus:border-solid focus:border-primary-color col l-8 md-12 c-12 w-full bg-yellow-100 p-1"
+										id="fullname"> <span
+										class="error-message col l-o-4 text-red-600"></span>
+
+								</div>
+								<div class="form-group row my-4">
+									<label class="col l-4 md-12 c-12" for="email">Email:</label><input
+										th:value="${#authentication.principal.user.email}" disabled
+										type="email" name="email"
+										class="focus:outline-none focus:border-[1px] focus:border-solid focus:border-primary-color col l-8 md-12 c-12 w-full bg-yellow-100 p-1"
+										id="email"> <span
+										class="error-message col l-o-4 text-red-600"></span>
+
+								</div>
+								<div class="form-group row my-4">
+									<label class="col l-4 md-12 c-12" for="phone">Số điện
+										thoại:</label><input disabled type="tel" name="phone"
+										th:value="${#authentication.principal.user.numberphone}"
+										class="focus:outline-none focus:border-[1px] focus:border-solid focus:border-primary-color col l-8 md-12 c-12 w-full bg-yellow-100 p-1"
+										id="phone"> <span
+										class="error-message col l-o-4 text-red-600"></span>
+
+								</div>
+								<div class="form-group row my-4">
+									<label class="col l-4" for="address">Địa chỉ:</label>
+									<textarea disabled name="address"
+										th:text="${#authentication.principal.user.address}"
+										class="focus:outline-none focus:border-[1px] focus:border-solid focus:border-primary-color col l-8 w-full bg-yellow-100"
+										id="address"></textarea>
+									<span class="error-message col l-o-4 text-red-600"></span>
+								</div>
+								<div class=" border-[1px] border-solid border-[#aaa] p-3 my-3">
+									<h5 class="font-semibold">Phương thức thanh toán:</h5>
+									<div class="">
+										<input checked type="radio" name="paymentMethods" value=""
+											id="COD"><label for="COD" class="ml-3">COD</label>
+									</div>
+									<div class="">
+										<input type="radio" name="paymentMethods" value="" id="CARD"><label
+											for="CARD" class="ml-3">Thẻ ngân hàng</label>
+									</div>
+								</div>
+								<button
+									th:if="${#authentication.principal.user.address == null || #authentication.principal.user.numberphone == null || #authentication.principal.user.fullname == null || #authentication.principal.user.email == null
+									|| #authentication.principal.user.address == '' || #authentication.principal.user.numberphone == '' || #authentication.principal.user.fullname == '' || #authentication.principal.user.email == ''
+									}"
+									class="mb-2 button btnCheckout uppercase btn-disabled w-full"
+									disabled>Vui lòng cập nhật đầy đủ thông tin</button>
+								<button type="submit" th:unless="${#authentication.principal.user.address == null || #authentication.principal.user.numberphone == null || #authentication.principal.user.fullname == null || #authentication.principal.user.email == null
+									|| #authentication.principal.user.address == '' || #authentication.principal.user.numberphone == '' || #authentication.principal.user.fullname == '' || #authentication.principal.user.email == ''
+									|| @cartService.getCount() == 0 }" class="button btnCheckout uppercase btn-primary w-full">Thanh
+									toán</button>
+									<button th:if="${@cartService.getCount() == 0 }" class="mb-2 button btnCheckout btn-disabled uppercase w-full" disabled>Giỏ hàng trống</button>
+								<!-- Btn khi đang submit -->
+								<button type="button" style="display: none;"
+									class="loading mb-4 tablet:w-full mobile:w-full w-50 h-50 float-right items-center px-4 py-2 font-semibold leading-6 text-sm shadow rounded-md text-white bg-yellow-400 transition ease-in-out duration-150 cursor-not-allowed"
+									disabled="">
+									<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+										xmlns="http://www.w3.org/2000/svg" fill="none"
+										viewBox="0 0 24 24">
+                                  <circle class="opacity-25" cx="12"
+											cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                  <path class="opacity-75"
+											fill="currentColor"
+											d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+									Đang đặt hàng...
+								</button>
+							</form>
+
+						</div>
+						<div class="col l-6 md-12 c-12 tablet:mt-5 mobile:mt-5">
+							<div class="p-5 shadow-lg h-[460px] overflow-auto">
+								<div th:each="cartItem : ${@cartService.getCartitems()}"
+									class="last:border-0 p-2 my-2 flex items-center justify-between border-b-[1px] border-solid border-[#aaa]">
+									<img class="object-contain shadow-md p-2 w-[60px] h-[60px]"
+										th:src="@{/file/} + ${cartItem.productOption.getProductImages().iterator().next().url}"
+										alt="">
+									<div>
+										<h4 th:text="${cartItem.productOption.getDisplayName()}" class="font-semibold"></h4>
+										<span th:text="${cartItem.getFormatedPriceHasDiscount()}"></span>
+									</div>
+									<div>
+										<span class="text-[12px]">x&nbsp;</span><span
+											class="font-semibold text-[16px]" th:text="${cartItem.getQuantity()}"></span>
+									</div>
+								</div>
+
+
+
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+
+
+		<!-- Footer -->
+		<footer th:replace="~{/fragments/user_layout.html :: footer}">
+		</footer>
+	</div>
+
+	<!-- Load các hàm xử ly flash message -->
+	<script th:replace="~{/fragments/_layout.html :: script-flash-message}"></script>
+
+	<!-- Load các hàm khởi tạo để tạo rich text -->
+	<script th:replace="~{/fragments/_layout.html :: script-rich-text}"></script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

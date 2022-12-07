@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="scroll-smooth dark"
+	lang="en">
+
+<head th:replace="~{/fragments/_layout.html :: head}">
+</head>
+
+<body class="bg-slate-100">
+	<div class="app overflow-hidden">
+		<!-- Arrow up -->
+		<aside th:replace="~{/fragments/_layout.html :: arrow-up}"></aside>
+		<div class="flex">
+			<!-- Menu -->
+			<aside th:replace="~{/fragments/_layout.html :: menu}"
+				class="mobile:hidden tablet:hidden"></aside>
+
+			<div class="w-full">
+				<!-- Header -->
+				<header th:replace="~{/fragments/_layout.html :: header}"
+					class="bg-primary-color h-[300px]"> </header>
+
+				<!-- Main content -->
+				<main>
+					<section
+						class="flex bg-blue-500 items-center justify-between shadow-lg text-white p-3 font-bold border-b-[#aaa] border-solid border-b-2">
+						<h3 class="">
+							<a class="hover:underline" href="./index.html">Sản phẩm</a> /
+							iPhone 13
+						</h3>
+						<form th:action="@{/admin/productOption/add}" method="get">
+							<input type="hidden" name="productId" th:value=${product.getId()} />
+							<button type="submit" class="btn-secondary">Thêm mới</button>
+						</form>
+					</section>
+					<div class="mt-[-150px] flex justify-center">
+						<img class="w-[200px]"
+							th:src="@{/file/} + ${product.getThumbnail()}" alt="">
+					</div>
+					<div class="row mb-5">
+						<!-- Product  Detail item -->
+						<section th:each="productOption : ${productOptions}"
+							class="p-3 w-full" th:data-id="${productOption.getId()}">
+							<div
+								class="bg-[#aaa] p-2 rounded-lg l-o-2 col l-8 flex justify-between">
+								<h3>
+									<a onclick="app.showTest(event)" class="p-1 mr-1"><i th:id="iconShowHide + ${productOption.getId()}"
+										class="iconShowHide fas fa-plus-circle"></i></a><span
+										th:text="${productOption.getDisplayName()}"></span>
+								</h3>
+								<i th:data-id="${productOption.getId()}"
+									class="hover:text-red-500 hover:cursor-pointer  fas fa-trash btnRemoveProductOption"></i>
+							</div>
+							<section class="mx-3">
+								<form action=""
+									class="fEditProductOption bg-blue-500 l-o-2 col l-8 py-3 overflow-hidden hidden reduceHeight">
+									<input class="productOptionId" type="hidden" th:value="${productOption.getId()}"/>
+									<div class="row sm-gutter">
+										<div class="form-group my-2 items-center col l-4">
+											<label class="text-white font-bold " for="productName">Tên
+												sản phẩm</label> <input disabled name="productName"
+												th:value="${product.getName()}"
+												placeholder="Tên sản phẩm..."
+												class="productName cursor-not-allowed bg-blue-300/50 w-full focus-visible:outline-none focus-visible:ring text-white font-bold h-[32px] p-5"
+												type="text" id=""> <span
+												class="error-message text-red-600"></span>
+										</div>
+										<div class="form-group my-2 items-center col l-4">
+											<label class="text-white font-bold " for="productOptionColor">Màu
+												sắc</label> <input th:value="${productOption.getColor()}"
+												name="productOptionColor" placeholder="Màu sắc..."
+												class="productOptionColor w-full focus-visible:outline-none focus-visible:ring bg-white  h-[32px] p-5"
+												type="text" id=""> <span
+												class="error-message text-red-600"></span>
+										</div>
+										<div class="form-group my-2 items-center col l-4">
+											<label class="text-white font-bold " for="productOptionRam">RAM</label> <input th:value="${productOption.getRam()}"
+												name="productOptionRam" placeholder="Ram..."
+												class="productOptionRam w-full focus-visible:outline-none focus-visible:ring bg-white  h-[32px] p-5"
+												type="text" id=""> <span
+												class="error-message text-red-600"></span>
+										</div>
+										<div class="form-group my-2 items-center col l-4">
+											<label class="text-white font-bold " for="productOptionRom">ROM</label> <input th:value="${productOption.getRom()}"
+												name="productOptionRom" placeholder="Rom..."
+												class="productOptionRom w-full focus-visible:outline-none focus-visible:ring bg-white  h-[32px] p-5"
+												type="text" id=""> <span
+												class="error-message text-red-600"></span>
+										</div>
+										<div class="form-group my-2 items-center col l-4">
+											<label class="text-white font-bold "
+												for="productOptionMonitor">Màn hình</label> <input
+												th:value="${productOption.getMonitor()}"
+												name="productOptionMonitor" placeholder="Màn hình..."
+												class="productOptionMonitor w-full focus-visible:outline-none focus-visible:ring bg-white  h-[32px] p-5"
+												type="text" id=""> <span
+												class="error-message text-red-600"></span>
+										</div>
+										<div class="form-group my-2 items-center col l-4">
+											<label class="text-white font-bold "
+												for="productOptionFrontCamera">Camera trước</label> <input
+												th:value="${productOption.getFrontCamera()}"
+												name="productOptionFrontCamera"
+												placeholder="Camera trước..."
+												class="productOptionFrontCamera w-full focus-visible:outline-none focus-visible:ring bg-white  h-[32px] p-5"
+												type="text" id=""> <span
+												class="error-message text-red-600"></span>
+										</div>
+										<div class="form-group my-2 items-center col l-4">
+											<label class="text-white font-bold "
+												for="productOptionRearCamera">Camera sau</label> <input
+												th:value="${productOption.getRearCamera()}"
+												name="productOptionRearCamera" placeholder="Camera sau..."
+												class="productOptionRearCamera w-full focus-visible:outline-none focus-visible:ring bg-white  h-[32px] p-5"
+												type="text" id=""> <span
+												class="error-message text-red-600"></span>
+										</div>
+										<div class="form-group my-2 items-center col l-4">
+											<label class="text-white font-bold " for="productOptionCpu">Bộ
+												xử lý trung tâm (CPU)</label> <input
+												th:value="${productOption.getCpu()}" name="productOptionCpu"
+												placeholder="Bộ xử lý trung tâm..."
+												class="productOptionCpu w-full focus-visible:outline-none focus-visible:ring bg-white  h-[32px] p-5"
+												type="text" id=""> <span
+												class="error-message text-red-600"></span>
+										</div>
+										<div class="form-group my-2 items-center col l-4">
+											<label class="text-white font-bold " for="productOptionGpu">Bộ
+												xử lý đồ hoạ (GPU)</label> <input th:value="${productOption.getGpu()}"
+												name="productOptionGpu" placeholder="Bộ xử lý đồ hoạ.."
+												class="productOptionGpu w-full focus-visible:outline-none focus-visible:ring bg-white  h-[32px] p-5"
+												type="text" id=""> <span
+												class="error-message text-red-600"></span>
+										</div>
+										<div class="form-group my-2 items-center col l-4">
+											<label class="text-white font-bold " for="productOptionPin">Pin</label>
+											<input th:value="${productOption.getPin()}"
+												name="productOptionPin" placeholder="Pin..."
+												class="productOptionPin w-full focus-visible:outline-none focus-visible:ring bg-white  h-[32px] p-5"
+												type="text" id=""> <span
+												class="error-message text-red-600"></span>
+										</div>
+										<div class="form-group my-2 items-center col l-4">
+											<label class="text-white font-bold "
+												for="productOptionCostPrice">Giá vốn</label> <input
+												th:value="${productOption.getCostPrice()}"
+												name="productOptionCostPrice" placeholder="Giá vốn..."
+												class="productOptionCostPrice w-full focus-visible:outline-none focus-visible:ring bg-white  h-[32px] p-5"
+												type="number" id=""> <span
+												class="error-message text-red-600"></span>
+										</div>
+										<div class="form-group my-2 items-center col l-4">
+											<label class="text-white font-bold "
+												for="productOptionSellingPrice">Giá bán</label> <input
+												th:value="${productOption.getSellingPrice()}"
+												name="productOptionSellingPrice" placeholder="Giá bán..."
+												class="productOptionSellingPrice w-full focus-visible:outline-none focus-visible:ring bg-white  h-[32px] p-5"
+												type="number" id=""> <span
+												class="error-message text-red-600"></span>
+										</div>
+										<div class="form-group my-2 items-center col l-12">
+											<label class="text-white font-bold" for="productName">Hình
+												ảnh chi tiết</label> <input class="detailImgsProduct" id="" type="file"
+												name="image[]" multiple hidden>
+											<!-- Form chua cac hinh anh upload -->
+											<div class="p-3  bg-white">
+												<div
+													class="p-1 border-dashed border-2 border-blue-500 min-h-[200px]">
+													<table class="w-full table-auto">
+														<!-- Img item -->
+														<tbody class="listImgDetails" id="">
+															<tr th:each="image : ${productOption.getProductImages()}" th:data-id="${image.getId()}" class="border-b-[1px] border-solid border-[#aaa]">
+																<td class="align-middle"><img
+																	class="w-[80px] h-[80px] object-contain p-2"
+																	th:src="@{/file/} + ${image.url}"
+																	alt=""></td>
+																<td class="align-middle">
+																	<div class="p-1">
+																		<span th:text="${image.url}"></span>
+
+																	</div>
+																</td>
+																<td class="align-middle text-right">
+																	<div class=" p-1">									
+																			<i
+																			title="Xoá"
+																			class="fas fa-trash btnRemoveImgsProduct hover:cursor-pointer hover:text-red-500" aria-hidden="true"></i>
+
+																	</div>
+																</td>
+															</tr>
+
+														</tbody>
+													</table>
+												</div>
+												<button type="button" id=""
+													class="btnAddDetailsImg btn-save mt-2">Thêm hình ảnh</button>
+												<span id="" class="sumaryErrorsUploadFiles text-red-500"></span>
+
+											</div>
+											<span class="error-message text-red-600"></span>
+										</div>
+										<div class="form-group my-2 items-center col l-12">
+											<label class="text-white font-bold">Cấu hình chi tiết</label>
+											<textarea th:id="${productOption.getId()}"
+												th:text="${productOption.getAllSpecifications()}"
+												name="productOptionAllSpecifications"
+												placeholder="Cấu hình chi tiết.."
+												class="productOptionAllSpecifications w-full focus-visible:outline-none focus-visible:ring bg-white  h-[32px] p-5"></textarea>
+											<span class="error-message text-red-600"></span>
+										</div>
+									</div>
+
+
+									<div class="row justify-between mx-1">
+										<button type="button" class="btnUpdateProductOption btn-secondary col l-6 w-full">Lưu</button>
+										<button type="button" class="btnCancelProductOption btn-cancel col l-4 w-full">Huỷ</button>
+									</div>
+								</form>
+							</section>
+						</section>
+					</div>
+
+				</main>
+			</div>
+
+		</div>
+
+		<!-- Footer -->
+		<footer th:replace="~{/fragments/_layout.html :: footer}"> </footer>
+	</div>
+
+	<!-- Load các hàm xử ly flash message -->
+	<script th:replace="~{/fragments/_layout.html :: script-flash-message}"></script>
+
+	<!-- Load các hàm khởi tạo để tạo rich text -->
+	<script th:replace="~{/fragments/_layout.html :: script-rich-text}"></script>
+</body>
+
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="scroll-smooth"
+	lang="en">
+
+<head th:replace="~{fragments/_layout.html :: head}">
+
+</head>
+
+<body class="bg-slate-100">
+
+	<div class="app overflow-hidden">
+		<!-- Arrow up -->
+		<aside th:replace="~{fragments/_layout.html :: arrow-up}"></aside>
+		<div class="flex">
+			<!-- Menu -->
+			<aside th:replace="~{fragments/_layout.html :: menu}"></aside>
+
+			<div class="w-full">
+				<!-- Header -->
+				<header th:replace="~{fragments/_layout.html :: header}"> </header>
+
+				<!-- Main content -->
+				<main>
+
+					<div class="mt-[-150px] row mb-5">
+						<form method="post" enctype='multipart/form-data'
+							th:action="@{/admin/product/update}" th:object="${product}"
+							class="l-o-2 col l-8 shadow-lg bg-blue-500 rounded-lg p-3 relative">
+							<div class="group mb-20">
+								<img id="ProductImg"
+									th:src="@{'/file/' + ${product.getThumbnail()}}" alt=""
+									class="object-contain w-[200px] h-[200px] group-hover:opacity-50 absolute top-0 translate-y-[-50%] left-[50%] translate-x-[-50%]">
+								<button type="button" id="btnSelectImgProduct"
+									class="btn-cancel absolute top-0 translate-y-[-50%] left-[50%] translate-x-[-50%] hidden group-hover:block">Chọn
+									ảnh</button>
+							</div>
+							<!--Những input nào để upload file, không cần đặt th:field, chỉ cần đặt name và bên controller gọi request part và xử lý là được-->
+							<input name="imageProduct" hidden id="imgProduct" type="file">
+							<input th:field="*{id}" type="hidden">
+							<div class="form-group row m-[24px_0px] items-center">
+								<label
+									class="text-white font-bold col l-12 md-12 c-12 tablet:pb-2 mobile:pb-2"
+									for="productName">Tên sản phẩm</label> <input
+									th:field="*{name}" th:value="${product.getName()}"
+									name="productName" placeholder="Sản phẩm..."
+									class="focus-visible:outline-none focus-visible:ring bg-white w-[280px] h-[32px] p-5 col l-12 md-12 c-12"
+									type="text" id="productName"> <span
+									class="error-message col l-o-4 text-red-600"></span>
+							</div>
+							<div class="form-group row m-[24px_0px] items-center">
+								<label
+									class="text-white font-bold col l-12 md-12 c-12 tablet:pb-2 mobile:pb-2"
+									for="productName">Nhà sản xuất</label> <select
+									th:field="*{producer}"
+									class="font-bold text-center text-blue-500 w-full focus-visible:outline-none focus-visible:ring bg-white  h-[40px] hover:cursor-pointer"
+									name="productProducer" id="productProducer">
+									<option th:each="prod : ${producers}"
+										th:value="${prod.getId()}" th:text="${prod.getName()}"></option>
+								</select> <span class="error-message col l-o-4 text-red-600"></span>
+							</div>
+							<div class="form-group row m-[24px_0px] items-center">
+								<label
+									class="text-white font-bold col l-4 md-12 c-12 tablet:pb-2 mobile:pb-2"
+									for="productIntroduce">Giới thiệu sản phẩm</label>
+								<textarea th:field="*{introdution}"
+									th:text="${product.getIntrodution()}" name="productIntroduce"
+									placeholder="Giới thiệu sản phẩm..."
+									class=" bg-blue-100 w-[280px] h-[32px] p-5 col l-8 md-12 c-12"
+									type="text" id="productIntroduce"></textarea>
+								<span class="error-message col l-o-4 text-red-600"></span>
+							</div>
+
+							<div class="row mx-1 justify-between">
+								<button type="submit" class="col l-6 btn-secondary mr-2">Lưu</button>
+								<a type="" href="/admin/product"
+									class="col l-4 btn-cancel text-center">Huỷ</a>
+							</div>
+						</form>
+					</div>
+				</main>
+			</div>
+
+		</div>
+
+		<!-- Footer -->
+		<footer th:replace="~{/fragments/_layout.html :: footer}"> </footer>
+	</div>
+
+	<!-- Load các hàm xử ly flash message -->
+	<script th:replace="~{/fragments/_layout.html :: script-flash-message}"></script>
+
+	<!-- Load các hàm khởi tạo để tạo rich text -->
+	<script th:replace="~{/fragments/_layout.html :: script-rich-text}"></script>
+</body>
+</html>

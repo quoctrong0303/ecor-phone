@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .btn-primary {
+      @apply py-2 px-4 bg-primary-color text-white font-semibold rounded-lg shadow-md hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-75;
+    }
+    .btn-disabled {
+      @apply py-2 px-4 bg-[#ccc] text-[#666] font-semibold rounded-lg shadow-md cursor-not-allowed;
+    }
+    .btn-save {
+      @apply py-2 px-4 bg-blue-500 hover:bg-blue-400 text-white font-semibold rounded-lg shadow-md ;
+    }
+    .btn-secondary {
+      @apply py-2 px-4 bg-green-500 hover:bg-green-400 text-white font-semibold rounded-lg shadow-md ;
+    }
+    .btn-cancel {
+      @apply py-2 px-4 bg-red-600 hover:bg-red-500 text-white font-semibold rounded-lg shadow-md ;
+    }
+    .border-item--active {
+      @apply relative border-primary-color border-solid border-[1px] after:content-['✓'] after:absolute after:top-0 after:left-0 after:px-1 after:bg-primary-color after:rounded-br-lg !important;
+    }
+    .border-item {
+      @apply border-[1px] border-[#d1d5db] border-solid
+    }
+    .reduceHeight {
+      @apply animate-[growDown_0.3s_linear]
+    }
+    .upHeight {
+      @apply animate-[growUp_0.3s_linear]
+    }
+    .fadeOut {
+      @apply animate-[fadeOut_.3s_linear]
+    }
+    
+  }
+
+
+
+  /* Notes */
+  /* Ring: Vòng, giống outline, border */
+  /* Leading-[30px] mỗi dòng chiếm 30px, thì 2 dòng là 60px, content sẽ có 2 dòng(line-clamp-2), vượt qua 2 dòng sẽ thành ... */

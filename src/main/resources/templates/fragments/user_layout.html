@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="scroll-smooth dark"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	lang="en">
+
+
+<!-- Modal full specifications -->
+<div th:fragment="allSpecifications"
+	class="modal-specifications hidden items-center justify-center right-0 bg-black/50 bottom-0 left-0 w-full h-full z-[99999]">
+	<div
+		class="animate-[slideAndFade_.2s_ease-in] max-h-[calc(100vh_-_40px)] pc:w-[500px] tablet:w-[500px] mobile:w-full overflow-hidden">
+		<!-- Header -->
+		<div
+			class="rounded-tr-lg rounded-tl-lg flex bg-yellow-600 p-5 justify-between items-center">
+			<h3 class="text-white uppercase font-bold">Thông số kỹ thuật</h3>
+			<a class="toggle-modal hover:opacity-80" href=""><i
+				class="text-white font-bold text-[16px] far fa-times-circle"></i></a>
+		</div>
+		<!-- Content -->
+		<div
+			class="bg-white max-h-[calc(100vh_-_200px)] flex justify-center overflow-y-auto">
+			<div th:utext="${productOption.allSpecifications}" class=""></div>
+		</div>
+		<!-- Footer -->
+		<div
+			class="rounded-br-lg rounded-bl-lg flex bg-[#f5f5f5] p-5 justify-between items-center">
+			<button
+				class="toggle-modal text-white uppercase bg-yellow-600 w-full rounded-xl p-2 font-bold">Đóng</button>
+		</div>
+	</div>
+</div>
+
+
+<header th:fragment="header">
+	<div class="bg-primary-color">
+		<div class="grids wide">
+			<div
+				class="flex justify-between items-center h-8 mobile:h-[40px] text-[12px] font-semibold">
+				<div class="pc:hidden relative flex items-center h-full">
+					<i
+						class="headerMenu fas fa-bars text-[16px] font-semibold hover:bg-yellow-600 p-3 hover:cursor-pointer "></i>
+					<!-- Menu mobile -->
+					<div
+						class="hidden wrapperMenu absolute top-[40px] h-screen text-[#f2f2f2] left-0 bg-[#333] w-screen z-50">
+						<ul class="select-none w-full">
+							<li class="p-2 text-[16px]">
+								<form action="/shop" method="get" class="mt-3 flex justify-center">
+									<input type="search" placeholder="Tìm kiếm..." name="q" class="text-black w-[50%] p-2">
+									<button>
+										<i
+											class="fas fa-search text-[12px] font-semibold hover:text-black hover:bg-[#ddd] p-3 hover:cursor-pointer "></i>
+									</button>
+								</form>
+							</li>
+							<li
+								class="text-[16px] p-2 hover:bg-[#ddd] hover:text-black hover:cursor-pointer">
+								<a class="block w-full" href="/">Trang chủ</a>
+							</li>
+							<li
+								class="text-[16px] p-2 hover:bg-[#ddd] hover:text-black hover:cursor-pointer">
+								<a class="block w-full" href="/shop">Sản phẩm</a>
+							</li>
+							<li
+								class="text-[16px] p-2 hover:bg-[#ddd] hover:text-black hover:cursor-pointer">
+								<a class="block w-full" href="/">Tin tức</a>
+							</li>
+							<li
+								class="text-[16px] p-2 hover:bg-[#ddd] hover:text-black hover:cursor-pointer">
+								<a class="block w-full" href="/order">Đơn đặt</a>
+							</li>
+							<li
+								class="text-[16px] p-2 hover:bg-[#ddd] hover:text-black hover:cursor-pointer">
+								<a class="block w-full" href="/cart">Giỏ hàng</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="tablet:hidden mobile:hidden">
+					<a href="mailto:quoctrong0303@gmail.com" class=""> <i
+						class="fas fa-envelope p-1 translate-y-[1px]"></i><span>quoctrong0303@gmail.com</span>
+					</a>
+				</div>
+				<!-- Not signed-->
+				<ul sec:authorize="!isAuthenticated()"
+					class="flex justify-between gap-2 p-2">
+					<a th:href="@{/login}"><li class=""><span class="">Đăng
+								nhập</span> <span>|</span></li></a>
+
+					<a th:href="@{/register}"><li class=""><span>Đăng
+								ký</span></li></a>
+				</ul>
+				<!-- Signed in -->
+				<div sec:authorize="isAuthenticated()" class="flex p-2">
+					<span>Xin chào, <span
+						sec:authentication="principal.user.fullname"></span></span>
+					<div class="relative group">
+						<img th:if="${#authentication.principal.user.avatar == null}"
+							src="https://via.placeholder.com/50" alt=""
+							class="hover:cursor-pointer ml-2 rounded-full w-5 h-5"> <img
+							th:if="${#authentication.principal.user.avatar != null}"
+							th:src="@{/file/} + ${#authentication.principal.user.avatar}"
+							alt="" class="hover:cursor-pointer ml-2 rounded-full w-5 h-5">
+						<!-- User settings -->
+						<div
+							class="z-10 w-[150px] bg-white right-[-10px] shadow-[0_1px_20px_0_rgb(0_0_0_/_20%)] absolute top-[calc(100%_+_10px)] animate-[fadeIn_.2s_ease-in] hidden group-hover:block">
+							<ul class="p-3">
+								<a href="/profile">
+									<li class="hover:text-primary-color pb-1">Tài khoản</li>
+								</a>
+								<a href="/change-password">
+									<li class="hover:text-primary-color pb-1">Đổi mật khẩu</li>
+								</a>
+								<a sec:authorize="hasAuthority('ADMIN')" href="/admin">
+									<li class="hover:text-primary-color pb-1">Admin dashboard</li>
+								</a>
+								<a class="" th:href="@{/logout}">
+									<li
+									class="hover:text-primary-color  pt-2 border-t-2 border-t-primary-color border-solid">
+										Đăng xuất</li>
+								</a>
+							</ul>
+							<!-- Arrow up -->
+							<div
+								class="absolute border-[20px]  border-b-white border-t-transparent border-l-transparent border-r-transparent top-[-30px] right-0 border-solid">
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Search -->
+	<div class="grids wide mobile:hidden tablet:hidden">
+		<div class="flex h-24 justify-between items-center">
+
+			<div class="">
+				<a href="#"> <img
+					class="border-2 border-solid border-yellow-500 h-[60px] object-contain"
+					src="https://images-platform.99static.com//bQzsVFJaxHG3baYYDtmtfidqxJ4=/0x0:1200x1200/fit-in/500x500/99designs-contests-attachments/91/91295/attachment_91295374"
+					alt="" srcset="">
+				</a>
+			</div>
+
+			<form action="/shop" method="get">
+				<div>
+					<!--//remove space
+                    -->
+					<div class="relative inline-block">
+						<input name="q" placeholder="Nhập sản phẩm bạn cần tìm..."
+							class="searchInput focus-visible:shadow-[0_0_5px_#ccc] focus-visible:outline-none p-4 border h-11 w-96 text-[16px]"
+							type="search" th:value="${searchvalue}">
+						<div
+							class="searchResult hidden w-full absolute z-[99999] top-0-0 left-0">
+							<div class="resultWrap"></div>
+						</div>
+					</div>
+					<!--remove space
+                    -->
+					<button
+						class="rounded-r-lg w-11 h-11 bg-primary-color hover:opacity-80">
+						<i class="text-[20px] fas fa-search"></i>
+					</button>
+				</div>
+			</form>
+
+			<div>
+				<div class="flex gap-4">
+					<div class="">
+						<a class="" href="tel:0384122297"> <i
+							class="translate-y-[7px] text-[42px] text-yellow-500 fas fa-mobile-alt"></i>
+						</a>
+					</div>
+					<div>
+						<span class="block">Hotline đặt hàng</span> <span
+							class="block text-[20px] text-yellow-500 font-semibold">0384122297</span>
+
+					</div>
+				</div>
+			</div>
+
+			<div class="relative group">
+				<!-- Class group giúp định nghĩa nguyên thẻ div là một nhóm, khi các thẻ con xài group-hover có nghĩa là khi hover vào thẻ chứa group thì thẻ chưa group-hover sẽ được CSS -->
+
+				<div class="relative">
+					<a href=""> <svg class="w-10 h-10 text-primary-color"
+							fill="none" stroke="currentColor" viewBox="0 0 24 24"
+							xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round"
+								stroke-linejoin="round" stroke-width="2"
+								d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9">
+                                    </path>
+                                </svg>
+						<div
+							class="absolute animate-ping w-2 h-2 top-0 right-[4px] bg-yellow-500 rounded-full">
+						</div>
+					</a>
+					<!-- News settings -->
+					<div
+						class="z-10 w-[450px]  bg-white right-0 shadow-[0_1px_20px_0_rgb(0_0_0_/_20%)] animate-[fadeIn_.2s_ease-in]  absolute top-[calc(100%_+_10px)] hidden group-hover:block">
+						<ul class="p-3 max-h-[450px] overflow-y-auto">
+							<div class="flex justify-between ">
+								<li
+									title="Sản phẩm giảm giá đến 50%Sản phẩm giảm giá đến 50%Sản phẩm giảm giá đến 50%"
+									class="hover:text-yellow-500 hover:cursor-pointer whitespace-nowrap text-ellipsis overflow-x-hidden border-b-2 border-solid border-yellow-500 p-2">
+									<span>[NÓNG]</span> <span>Sản phẩm giảm giá đến 50%Sản
+										phẩm giảm giá đến 50%Sản phẩm giảm giá đến 50%</span>
+								</li> <a title=""
+									class="hover:text-primary-color text-[16px] font-semibold leading-[28px]"
+									href="">x</a>
+							</div>
+							<div class="flex justify-between ">
+								<li
+									title="Sản phẩm giảm giá đến 50%Sản phẩm giảm giá đến 50%Sản phẩm giảm giá đến 50%"
+									class="hover:text-yellow-500 hover:cursor-pointer whitespace-nowrap text-ellipsis overflow-x-hidden border-b-2 border-solid border-yellow-500 p-2">
+									<span>[NÓNG]</span> <span>Sản phẩm giảm giá đến 50%Sản
+										phẩm giảm giá đến 50%Sản phẩm giảm giá đến 50%</span>
+								</li> <a title=""
+									class="hover:text-primary-color text-[16px] font-semibold leading-[28px]"
+									href="">x</a>
+							</div>
+							<div class="flex justify-between ">
+								<li
+									title="Sản phẩm giảm giá đến 50%Sản phẩm giảm giá đến 50%Sản phẩm giảm giá đến 50%"
+									class="hover:text-yellow-500 hover:cursor-pointer whitespace-nowrap text-ellipsis overflow-x-hidden border-b-2 border-solid border-yellow-500 p-2">
+									<span>[NÓNG]</span> <span>Sản phẩm giảm giá đến 50%Sản
+										phẩm giảm giá đến 50%Sản phẩm giảm giá đến 50%</span>
+								</li> <a title=""
+									class="hover:text-primary-color text-[16px] font-semibold leading-[28px]"
+									href="">x</a>
+							</div>
+							<div class="flex justify-between ">
+								<li
+									title="Sản phẩm giảm giá đến 50%Sản phẩm giảm giá đến 50%Sản phẩm giảm giá đến 50%"
+									class="hover:text-yellow-500 hover:cursor-pointer whitespace-nowrap text-ellipsis overflow-x-hidden border-b-2 border-solid border-yellow-500 p-2">
+									<span>[NÓNG]</span> <span>Sản phẩm giảm giá đến 50%Sản
+										phẩm giảm giá đến 50%Sản phẩm giảm giá đến 50%</span>
+								</li> <a title=""
+									class="hover:text-primary-color text-[16px] font-semibold leading-[28px]"
+									href="">x</a>
+							</div>
+						</ul>
+						<!-- Arrow up -->
+						<div
+							class="absolute border-[20px]  border-b-white border-t-transparent border-l-transparent border-r-transparent top-[-30px] right-0 border-solid">
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+</header>
+
+
+<!-- Navbar -->
+<nav th:fragment="navbar"
+	class="h-11 bg-yellow-500 mobile:hidden tablet:hidden">
+	<div class="grids wide">
+		<div class="h-11 flex justify-between items-center font-semibold">
+			<div class="flex h-11">
+				<a
+					class="hover:bg-primary-color hover:opacity-80 hover:cursor-pointer p-2"
+					href="/"><p class="">Trang chủ</p></a> <a
+					class="hover:bg-primary-color hover:opacity-80 hover:cursor-pointer p-2"
+					href="/shop">
+					<p class="">Sản phẩm</p>
+				</a>
+				<p
+					class="hover:bg-primary-color hover:opacity-80 hover:cursor-pointer p-2">Tin
+					tức</p>
+				<a href="/order"
+					class="hover:bg-primary-color hover:opacity-80 hover:cursor-pointer p-2">Đơn
+					hàng</a>
+				<p
+					class="hover:bg-primary-color hover:opacity-80 hover:cursor-pointer p-2">Phản
+					hồi</p>
+			</div>
+
+			<div th:if="${#httpServletRequest.requestURI != '/cart'}"
+				class="group relative  hover:cursor-pointer font-semibold bg-primary-color p-[4px_12px] rounded-lg">
+				<!-- Cart -->
+				<div class="flex gap-2 justify-center items-center">
+					<p>Giỏ hàng</p>
+					<i class="text-[24px] fas fa-shopping-cart"></i>
+				</div>
+				<div
+					class="border-solid border-2 border-primary-color 
+                            absolute top-[1px] right-1 rounded-[99%] w-5 h-5 leading-[16px] 
+                            text-center text-white text-[12px] bg-black">
+					<p th:text="${@cartService.getCount()}" id="cart-count"></p>
+				</div>
+
+				<!-- Cart hover -->
+				<div
+					class="animate-[fadeIn_.2s_ease-in] group-hover:block hidden 
+                        shadow-[0_1px_20px_0_rgb(0_0_0_/_20%)] z-10 bg-white w-[500px] 
+                        right-0 border-solid rounded-[2px] absolute top-[calc(100%_+_10px)]  ">
+					<!-- triagle draw -->
+					<div
+						class="top-[-30px] right-8 absolute border-solid border-[20px] 
+                            border-b-white border-t-transparent border-r-transparent border-l-transparent">
+
+					</div>
+					<h3
+						class="cursor-default text-[#757575] text-[12px] m-[8px_0_8px_12px]">Sản
+						phẩm đã thêm</h3>
+					<!-- No carts -->
+					<div th:if="${@cartService.getCount == 0}" class="cursor-default">
+						<img th:src="@{/file/empty-cart.webp}" alt="">
+					</div>
+					<!-- Has carts -->
+					<ul th:if="${@cartService.getCount() != 0}"
+						class="max-h-[370px] overflow-y-scroll">
+						<li th:each="cartItem : ${@cartService.getCartitems()}"
+							class="item-cart hover:bg-slate-100 flex align-center"><img
+							class="m-3 w-[40px] h-[40px] object-contain border-solid border-[1px] border-[#e8e8e8]"
+							th:src="@{/file/} + ${cartItem.productOption.getProductImages().iterator().next().url}"
+							alt="">
+							<section th:data-id="${cartItem.productOption.id}"
+								class="w-[100%] mr-3">
+								<div class="flex justify-between">
+									<h5 th:text="${cartItem.productOption.getDisplayName()}"></h5>
+									<div>
+										<span
+											th:text="${cartItem.productOption.getFormatedPriceHasDiscount()}"
+											class="text-yellow-500"></span> <span
+											class="text-[10px] text-[#757575]">x</span> <span
+											th:text="${cartItem.quantity}"
+											class="text-[12px] text-[#757575]"></span>
+									</div>
+								</div>
+
+								<div class="flex justify-between">
+									<span class="text-[14px] text-[#757575] font-[300]">Nhà
+										sản xuất: <span
+										th:text="${cartItem.productOption.product.producer.name}"></span>
+									</span>
+								</div>
+							</section></li>
+					</ul>
+					<div class="p-2 text-right cursor-default">
+						<a th:href="@{/cart}"
+							class="hover:opacity-90 inline-block font-semibold text-[12px] p-[8px_12px] bg-primary-color">Xem
+							giỏ hàng</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</nav>
+
+<!-- Slider and Posts -->
+<div th:fragment="slider" class="bg-slate-200 pt-3 min-h-[348px]">
+	<div class="grids wide">
+		<div class="row">
+
+			<!-- Slider -->
+			<aside class="col l-8 md-12 c-12">
+				<div class="splide" aria-label="Splide Basic HTML Example">
+					<div class="splide__track">
+						<ul class="splide__list">
+							<li class="splide__slide"><img class="h-[316px] w-[100%]"
+								th:src="@{/file/banner1.jpg}" alt="" srcset=""></li>
+							<li class="splide__slide"><img class="h-[316px] w-[100%]"
+								th:src="@{/file/banner2.webp}" alt="" srcset=""></li>
+							<li class="splide__slide"><img class="h-[316px] w-[100%]"
+								th:src="@{/file/banner3.jpg}" alt="" srcset=""></li>
+							<li class="splide__slide"><img class="h-[316px] w-[100%]"
+								th:src="@{/file/banner4.jpg}" alt="" srcset=""></li>
+					</div>
+				</div>
+			</aside>
+
+			<!-- Posts -->
+			<article class="col l-4 md-0 c-0">
+				<div class="min-h-[316px] bg-white">
+					<div class="p-4 bg-yellow-500">
+						<span class="uppercase font-semibold"><i
+							class="fas fa-blog pr-2"></i>bài viết hữu ích</span>
+					</div>
+					<div class="">
+						<div
+							th:each="post : ${@postService.findTop3ByOrderByCreatedDate()}"
+							th:data-id="${post.id}"
+							class="posts group hover:cursor-pointer border-b-2 border-gray-100 border-solid p-[12px_8px] flex">
+							<img class="pr-3 object-contain h-[60px] w-[84px]"
+								th:src="@{/file/} + ${post.thumbnail}" alt="">
+							<div>
+								<p th:text="${post.title}"
+									class="line-clamp-2 group-hover:text-yellow-500 leading-[22px]"></p>
+								<p th:text="${post.createdDate}"
+									class="text-[12px] font-[200] italic"></p>
+							</div>
+						</div>
+
+
+
+
+					</div>
+				</div>
+			</article>
+		</div>
+	</div>
+</div>
+
+
+<!-- Footer -->
+<footer th:fragment="footer"
+	class="pt-4 border-solid border-primary-color border-t-4">
+	<div class="grids wide pb-4">
+		<div class="row tablet:p-[0_16px] mobile:p-[0_16px]">
+			<div class="col l-3 md-6 c-6 mb-5">
+				<p class="font-semibold text-[16px] pb-2 uppercase">Chăm sóc
+					khách hàng</p>
+				<ul class="text-[12px] text-[#737373]">
+					<li class="hover:text-primary-color hover:cursor-pointer">Trung
+						Tâm Trợ Giúp</li>
+					<li class="hover:text-primary-color hover:cursor-pointer">Sản
+						phẩm</li>
+					<li class="hover:text-primary-color hover:cursor-pointer">Hướng
+						Dẫn Mua Hàng</li>
+				</ul>
+			</div>
+			<div class="col l-3 md-6 c-6 mb-5">
+				<p class="font-semibold text-[16px] pb-2 uppercase">Giới thiệu</p>
+				<ul class="text-[12px] text-[#737373]">
+					<li class="hover:text-primary-color hover:cursor-pointer">Trung
+						Tâm Trợ Giúp</li>
+					<li class="hover:text-primary-color hover:cursor-pointer">Cửa
+						Hàng</li>
+					<li class="hover:text-primary-color hover:cursor-pointer">Hướng
+						Dẫn Mua Hàng</li>
+				</ul>
+			</div>
+			<div class="col l-3 md-6 c-6 mb-5">
+				<p class="font-semibold text-[16px] pb-2 uppercase">Danh mục</p>
+				<ul class="text-[12px] text-[#737373]">
+					<li class="hover:text-primary-color hover:cursor-pointer">Apple</li>
+					<li class="hover:text-primary-color hover:cursor-pointer">Samsung</li>
+					<li class="hover:text-primary-color hover:cursor-pointer">Xiaomi</li>
+				</ul>
+			</div>
+			<div class="col l-3 md-6 c-6 mb-5 c-0">
+				<p class="font-semibold text-[16px] pb-2 uppercase">Theo dõi
+					chúng tôi</p>
+				<div class="">
+					<iframe
+						src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FKIDS-107222962129810&tabs&width=280&height=100&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId"
+						style="border: none; overflow: hidden" scrolling="no"
+						frameborder="0" allowfullscreen="true"
+						allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="h-10 bg-[#f5f5f5]">
+		<p class="leading-[40px] text-center text-[#737373] text-[12px]">2022
+			- Bản quyền thuộc về Quốc Trọng</p>
+	</div>
+
+</footer>
+</html>

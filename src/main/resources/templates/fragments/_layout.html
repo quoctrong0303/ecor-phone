@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="scroll-smooth dark"
+	lang="en">
+
+<head th:fragment="head">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="shortcut icon"
+	href="../img/logo/6398f61cdd8d9ea570d48b7c68d33132.png"
+	type="image/x-icon">
+
+<!-- CSS -->
+<link rel="stylesheet" th:href="@{/css/base.css}">
+<link rel="stylesheet" th:href="@{/css/main.css}">
+<link rel="stylesheet" th:href="@{/css/tailwind.css}">
+<link rel="stylesheet" th:href="@{/css/grid.css}">
+<link rel="stylesheet" th:href="@{/css/splide.min.css}">
+<link rel="stylesheet" th:href="@{/css/flash.min.css}">
+
+<!-- JS -->
+
+<script th:src="@{/js/flash.min.js}"></script>
+
+<script th:src="@{/js/splide.min.js}"></script>
+<script defer th:src="@{/js/script.js}"></script>
+<script defer th:src="@{/js/responsive.js}"></script>
+<script defer th:src="@{/js/validator.js}"></script>
+<script defer th:src="@{/js/chart.js}"></script>
+<script defer th:src="@{/js/datetime.js}"></script>
+<script src="https://kit.fontawesome.com/11fdb00ab9.js"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdn.tiny.cloud/1/p7dsag67tvql39j2y9hvj8u9z1tbhgogvbbcaqqo6l75usag/tinymce/5/tinymce.min.js"
+	referrerpolicy="origin">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<title th:if="${title == null}">Document</title>
+<title th:if="${title != null}" th:text="${title}"></title>
+</head>
+
+<body class="bg-slate-100">
+
+	<!-- Modal add Receipt -->
+	<div th:fragment="modalAddReceipt"
+		class="modal-addReceipt hidden items-center justify-center right-0 bg-black/50 bottom-0 left-0 w-full h-full z-[99999]">
+		<div
+			class="animate-[slideAndFade_.2s_ease-in] max-h-[calc(100vh_-_40px)] pc:w-[1000px] tablet:w-[500px] mobile:w-full overflow-hidden">
+			<!-- Header -->
+			<div
+				class="rounded-tr-lg rounded-tl-lg flex bg-blue-500 p-5 justify-between items-center">
+				<h3 class="text-white uppercase font-bold">Thêm đơn nhập hàng</h3>
+				<i
+					class="btnCancelAddReceipt text-white font-bold text-[16px] hover:cursor-pointer hover:opacity-80 far fa-times-circle"></i>
+			</div>
+			<!-- Content -->
+			<form id="fAddReceipt" action=""
+				class=" border-t-2 border-solid border-t-white shadow-lg bg-blue-500 p-3 relative">
+				<div class="row">
+					<div class="col l-6">
+						<div class="form-group row m-[24px_0px] items-center">
+							<label
+								class="text-white font-bold col l-4 md-12 c-12 tablet:pb-2 mobile:pb-2">Cửa
+								hàng:</label> <select disabled
+								class="store focus-visible:outline-none focus-visible:ring bg-white w-[280px] h-[40px] col l-8 md-12 c-12">
+								<option th:each="store : ${stores}" th:text="${store.getName()}"
+									th:value="${store.getId()}"></option>
+							</select> <span class="error-message col l-o-4 text-red-600"></span>
+						</div>
+					</div>
+					<div class="col l-6">
+						<div class="form-group row m-[24px_0px] items-center">
+							<label
+								class="text-white font-bold col l-4 md-12 c-12 tablet:pb-2 mobile:pb-2">Nhà
+								cung cấp:</label> <select
+								class="supplier hover:cursor-pointer focus-visible:outline-none focus-visible:ring bg-white w-[280px] h-[40px] col l-8 md-12 c-12">
+								<option th:each="supplier : ${suppliers}"
+									th:value="${supplier.getId()}" th:text="${supplier.getName()}"></option>
+							</select> <span class="error-message col l-o-4 text-red-600"></span>
+						</div>
+					</div>
+
+				</div>
+				<div
+					class="productOptionList overflow-x-hidden h-[300px] overflow-y-auto border-t-2 border-t-white border-dashed">
+
+					<div class="productOptionItem row">
+						<div class="col l-4">
+							<div class=" form-group row m-[24px_0px] items-center">
+								<label
+									class="text-white font-bold col l-4 md-12 c-12 tablet:pb-2 mobile:pb-2">Sản
+									phẩm:</label> <select name="productOption"
+									class="productOption focus-visible:outline-none focus-visible:ring bg-white w-[280px] h-[40px] col l-8 md-12 c-12">
+									<option th:each="productOption : ${productOptions}"
+										th:text="${productOption.getProduct().getName()} + ' - ' + 
+									${productOption.getColor()} + ' - ' +
+									${productOption.getRom()}"
+										th:value="${productOption.getId()}"></option>
+								</select> <span class="error-message col l-o-4 text-red-600"></span>
+							</div>
+						</div>
+						<div class="col l-4">
+							<div class=" form-group row m-[24px_0px] items-center">
+								<label
+									class="text-white font-bold col l-4 md-12 c-12 tablet:pb-2 mobile:pb-2">Số
+									lượng:</label> <input name="productOptionQuantity"
+									placeholder="Số lượng..."
+									class="productOptionQuantity focus-visible:outline-none focus-visible:ring bg-white w-[280px] h-[32px] p-5 col l-6 md-12 c-12"
+									type="number"> <span
+									class="error-message col l-o-4 text-red-600"></span>
+							</div>
+						</div>
+						<div class="col l-4">
+							<div class=" form-group row m-[24px_0px] items-center">
+								<label
+									class="text-white font-bold col l-4 md-12 c-12 tablet:pb-2 mobile:pb-2">Giá:</label>
+								<input name="receiptDetailPrice" placeholder="Giá..."
+									class="receiptDetailPrice focus-visible:outline-none focus-visible:ring bg-white w-[280px] h-[32px] p-5 col l-6 md-12 c-12"
+									type="number">
+								<div class="col l-2 text-right">
+									<i
+										class="btnRemoveProductOptionInReceipt text-white rounded-full bg-red-500 shadow-lg p-2 hover:cursor-pointer hover:scale-110 fas fa-trash"></i>
+								</div>
+								<span class="error-message col l-o-4 text-red-600"></span>
+							</div>
+						</div>
+					</div>
+
+
+
+
+				</div>
+
+				<button
+					class="btnAddMoreProductOption btn-primary w-full my-2 text-black font-bold"
+					type="button">+</button>
+
+				<div class="row mx-1 justify-between">
+					<button type="button"
+						class="btnSubmitAddReceipt  col l-6 btn-secondary">Lưu</button>
+					<button type="button"
+						class="btnCancelAddReceipt col l-4 btn-cancel text-centerbtnCancel">Huỷ</button>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="app overflow-hidden">
+		<!-- Arrow up -->
+		<aside th:fragment="arrow-up">
+			<button style="display: none;" class="z-[100] arrow-scroll">
+				<div class="fixed z-[1000] right-3 bottom-3 hover:cursor-pointer">
+					<div
+						class="animate-bounce bg-white p-2 w-10 h-10 ring-1 ring-slate-900/5 shadow-lg rounded-full flex items-center justify-center">
+						<svg className="w-6 h-6" class="text-yellow-500" fill="none"
+							stroke="currentColor" viewBox="0 0 24 24"
+							xmlns="http://www.w3.org/2000/svg">
+                            <path strokeLinecap="round"
+								strokeLinejoin="round" strokeWidth={2}
+								d="M8 7l4-4m0 0l4 4m-4-4v18" />
+                        </svg>
+					</div>
+				</div>
+			</button>
+		</aside>
+		<div class="flex">
+			<!-- Menu -->
+			<aside th:fragment="menu" class="mobile:hidden tablet:hidden">
+				<div class="p-5 w-[280px] h-screen overflow-y-auto bg-white">
+					<h2 class="font-bold text-[24px] text-center"><a href="/">Shop</a></h2>
+					<ul class="text-justify mt-10">
+						<a href="/admin"><li
+							th:classappend="${#httpServletRequest.requestURI == '/admin' || #httpServletRequest.requestURI == '/admin/'} ? 'bg-primary-color text-white' : 'text-[#aaa] hover:bg-slate-100'"
+							class="hover:cursor-pointer p-2 mb-4 rounded-lg"><i
+							class="p-1 mr-1 fas fa-tachometer-alt"></i>Tổng
+								quan</li></a>
+						<a href="/admin/store">
+							<li
+							th:classappend="${#httpServletRequest.requestURI == '/admin/store' || #httpServletRequest.requestURI == '/admin/store/'} ? 'bg-primary-color text-white' : 'text-[#aaa] hover:bg-slate-100'"
+							class="hover:cursor-pointer  p-2 mb-4 rounded-lg"><i
+							class="p-1 mr-1 fas fa-store"></i>Cửa hàng</li>
+						</a>
+						<a href="/admin/user"><li
+							th:classappend="${#httpServletRequest.requestURI == '/admin/user' || #httpServletRequest.requestURI == '/admin/user/'} ? 'bg-primary-color text-white' : 'text-[#aaa] hover:bg-slate-100'"
+							class="hover:cursor-pointer  p-2 mb-4 rounded-lg"><i
+							class="p-1 mr-1 fas fa-user-shield"></i>Tài khoản</li></a>
+						<a href="/admin/product"><li
+							th:classappend="${#httpServletRequest.requestURI == '/admin/product' || #httpServletRequest.requestURI == '/admin/product/'} ? 'bg-primary-color text-white' : 'text-[#aaa] hover:bg-slate-100'"
+							class="hover:cursor-pointer  p-2 mb-4 rounded-lg"><i
+								class="p-1 mr-1 far fa-hand-point-right"></i>Sản phẩm</li></a>
+						<a href="/admin/producer"><li
+							th:classappend="${#httpServletRequest.requestURI == '/admin/producer' || #httpServletRequest.requestURI == '/admin/producer/'} ? 'bg-primary-color text-white' : 'text-[#aaa] hover:bg-slate-100'"
+							class="hover:cursor-pointer  p-2 mb-4 rounded-lg"><i
+								class="p-1 mr-1 fas fa-microchip"></i>Nhà sản xuất</li></a>
+						<a href="/admin/supplier"><li
+							th:classappend="${#httpServletRequest.requestURI == '/admin/supplier' || #httpServletRequest.requestURI == '/admin/supplier/'} ? 'bg-primary-color text-white' : 'text-[#aaa] hover:bg-slate-100'"
+							class="hover:cursor-pointer  p-2 mb-4 rounded-lg"><i
+								class="p-1 mr-1 fas fa-box-open"></i>Nhà cung cấp</li></a>
+						<a href="/admin/invoice">
+							<li
+							th:classappend="${#httpServletRequest.requestURI == '/admin/invoice' || #httpServletRequest.requestURI == '/admin/invoice/'} ? 'bg-primary-color text-white' : 'text-[#aaa] hover:bg-slate-100'"
+							class="hover:cursor-pointer  p-2 mb-4 rounded-lg"><i
+							class="p-1 mr-1 fas fa-money-bill"></i>Hoá đơn</li>
+						</a>
+						<a href="/admin/receipt"><li
+							th:classappend="${#httpServletRequest.requestURI == '/admin/receipt' || #httpServletRequest.requestURI == '/admin/receipt/'} ? 'bg-primary-color text-white' : 'text-[#aaa] hover:bg-slate-100'"
+							class="hover:cursor-pointer  p-2 mb-4 rounded-lg"><i
+								class="p-1 mr-1 fas fa-wallet"></i>Đơn nhập hàng</li></a>
+						<a href="/admin/order">
+							<li
+							th:classappend="${#httpServletRequest.requestURI == '/admin/order' || #httpServletRequest.requestURI == '/admin/order/'} ? 'bg-primary-color text-white' : 'text-[#aaa] hover:bg-slate-100'"
+							class="hover:cursor-pointer  p-2 mb-4 rounded-lg"><i
+							class="p-1 mr-1 fas fa-tachometer-alt"></i>Đơn đặt</li>
+						</a>
+						<a href="/admin/promotion"><li
+							th:classappend="${#httpServletRequest.requestURI == '/admin/promotion' || #httpServletRequest.requestURI == '/admin/promotion/'} ? 'bg-primary-color text-white' : 'text-[#aaa] hover:bg-slate-100'"
+							class="hover:cursor-pointer  p-2 mb-4 rounded-lg"><i
+								class="p-1 mr-1 fas fa-percent"></i>Khuyến mãi</li></a>
+						<a href="/admin/promotion-product"><li
+							th:classappend="${#httpServletRequest.requestURI == '/admin/promotion-product' || #httpServletRequest.requestURI == '/admin/promotion-product/'} ? 'bg-primary-color text-white' : 'text-[#aaa] hover:bg-slate-100'"
+							class="hover:cursor-pointer  p-2 mb-4 rounded-lg"><img
+								th:src="@{/img/others/hotsale.gif}"
+								class="w-[30px] p-1 mr-1 inline-block" alt="" />Sản phẩm khuyến
+								mãi</li></a>
+						<a href="/admin/post">
+							<li
+							th:classappend="${#httpServletRequest.requestURI == '/admin/post' || #httpServletRequest.requestURI == '/admin/post/'} ? 'bg-primary-color text-white' : 'text-[#aaa] hover:bg-slate-100'"
+							class="hover:cursor-pointer p-2 mb-4 rounded-lg"><i
+							class="p-1 mr-1 fas fa-blog"></i>Bài viết</li>
+						</a>
+							<a href="/admin/statistic"><li
+							th:classappend="${#httpServletRequest.requestURI == '/admin/statistic' || #httpServletRequest.requestURI == '/admin/statistic/'} ? 'bg-primary-color text-white' : 'text-[#aaa] hover:bg-slate-100'"
+							class="hover:cursor-pointer  p-2 mb-4 rounded-lg"><i
+							class="p-1 mr-1 fas fa-chart-bar"></i>Thống kê</li></a>
+
+					</ul>
+
+				</div>
+			</aside>
+
+			<div class="w-full">
+				<!-- Header -->
+				<header th:fragment="header" class="bg-primary-color h-[300px]">
+					<div class="p-5 flex justify-between items-center">
+						<h3 class="font-bold text-[#666] text-[20px]" th:text="${title}"></h3>
+						<div class="flex items-center gap-5">
+							<img th:src="@{/file/} + ${#authentication.principal.user.avatar}" class="w-[60px] h-[60px] rounded-full "
+								alt="">
+						</div>
+					</div>
+				</header>
+
+				<!-- Main content -->
+				<main>
+
+					<div class="m-[-150px_50px_0_50px] ">
+						<div class="flex items-center justify-between">
+							<div class="flex items-center">
+								<form method="get" th:action="@{/product/add}">
+									<button class="btn-save">Thêm sản phẩm</button>
+
+
+								</form>
+								<div class="relative mx-3">
+									<input placeholder="Nhập thông tin cần tìm..."
+										class=" rounded-lg shadow-md w-[240px] p-[8px_8px_8px_32px] focus:outline-none  focus:ring"
+										type="text"> <span
+										class="absolute left-0 top-[50%] translate-y-[-50%] p-[8px_0_8px_8px]">
+										<i class="text-[#666] fas fa-search"></i>
+									</span>
+								</div>
+							</div>
+							<div class="px-2 flex items-center">
+								<!-- arrow pagination -->
+								<section class="px-2">
+									<span
+										class="text-[20px] mr-2 text-blue-500 hover:cursor-pointer">
+										<i class="fas fa-chevron-left"></i>
+									</span> <span
+										class="text-[20px]  mr-2 text-blue-500 hover:cursor-pointer">
+										<i class="fas fa-chevron-right"></i>
+									</span>
+								</section>
+								<!-- pagination -->
+								<section class="px-2">
+									<span class="font-bold text-blue-500">1</span> <span>/</span> <span>5</span>
+								</section>
+							</div>
+						</div>
+						<table class="w-full bg-white my-3 shadow-lg">
+							<thead class="font-bold bg-blue-500 uppercase text-white">
+								<tr>
+									<th class="p-2"><select name="" id=""
+										class="text-white bg-blue-500 focus-visible:outline-none hover:cursor-pointer">
+											<option value="">10</option>
+											<option value="">50</option>
+											<option value="">100</option>
+									</select></th>
+									<th class="p-2"><span>STT</span></th>
+									<th class="p-2"><span>Tên</span> <span
+										class="hover:cursor-pointer hover:opacity-80"><i
+											class="fas fa-sort"></i></span></th>
+									<th class="p-2"><span>Ảnh</span></th>
+									<th class="p-2"><span>Giới thiệu sản phẩm</span></th>
+									<th class="p-2"><span>Số lượng</span> <span
+										class="hover:cursor-pointer hover:opacity-80"><i
+											class="fas fa-sort"></i></span></th>
+									<th class="p-2"><span>Hành động</span></th>
+								</tr>
+							</thead>
+							<tbody class="text-center bg-white">
+
+								<tr th:each="product : ${products}"
+									class="even:bg-blue-100 odd:bg-white">
+									<td class="p-2 align-middle"><i
+										class="text-blue-500 fas fa-plus-circle hover:cursor-pointer hover:opacity-80"></i>
+									</td>
+									<td class="p-2 align-middle">1</td>
+									<td th:text="*{product.getName()}"
+										class="nameProduct p-2 align-middle"></td>
+									<td class="p-2 align-middle"><img
+										th:src="@{'/product/files/' + *{product.getThumbnail()}}"
+										class="m-auto h-[60px] w-[60px] object-contain" alt="">
+									</td>
+									<td
+										class=" p-2 align-middle max-w-0 whitespace-nowrap overflow-hidden text-ellipsis">
+										<div th:utext="*{product.getIntrodution()}" id="Introdution"
+											class="align-middle h-[80px] overflow-hidden"></div> <a
+										id="btnViewMoreIntrodution"
+										onclick="app.showModalIntrodution(event)"
+										class="text-blue-500 hover:underline" href="">Xem thêm</a>
+									</td>
+									<td class="p-2 align-middle">1</td>
+									<td class="p-2 align-middle">
+										<div class="flex items-center justify-center">
+											<a href="./listProductDetail.html"><i
+												class="hover:text-green-500 hover:cursor-pointer p-1 mr-1 fas fa-eye"></i></a>
+											<a th:href="@{/product/update/}+ *{product.getId()}"><i
+												class="hover:text-blue-500 hover:cursor-pointer p-1 mr-1 fas fa-pen"></i></a>
+											<i th:data-id="*{product.getId()}"
+												class="removeProduct hover:text-red-500 hover:cursor-pointer p-1 mr-1 fas fa-trash"></i>
+										</div>
+									</td>
+								</tr>
+
+
+
+							</tbody>
+						</table>
+					</div>
+				</main>
+			</div>
+
+		</div>
+
+		<!-- Footer -->
+		<footer th:fragment="footer"
+			class="pt-4 border-solid border-primary-color border-t-4">
+
+			<div class="h-10 bg-[#f5f5f5]">
+				<p class="leading-[40px] text-center text-[#737373] text-[12px]">2022
+					- Bản quyền thuộc về Quốc Trọng</p>
+			</div>
+
+		</footer>
+	</div>
+
+	<script th:fragment="script-flash-message" th:inline="javascript">
+		window.addEventListener('DOMContentLoaded', function() {
+			var error = [[${error}]];
+		    var success = [[${success}]];
+		    	if (error != null) {
+		    		window.FlashMessage.error(error, {
+		    			 progress: true,
+		    			  interactive: true,
+		    			  timeout: 5000,
+		    			  appear_delay: 200,
+		    		});
+		    	}
+		    	if (success != null) {
+		    		window.FlashMessage.success(success, {
+		    			 progress: true,
+		    			  interactive: true,
+		    			  timeout: 5000,
+		    			  appear_delay: 200,
+		    		});
+		    	}
+	    });
+    
+	</script>
+
+	<script th:fragment="script-rich-text">
+	window.addEventListener('DOMContentLoaded', function() {
+		
+		//Đã hoàn thành xong chức năng upload ảnh lên server khi insert ảnh vào editor
+	    tinymce.init({
+			selector: 'textarea#productIntroduce',
+			height: '400',
+			width: '100%',
+			plugins: 'quickbars table image link lists media help',
+			images_upload_url: '/file/uploads',
+			images_upload_base_path: '/',
+			toolbar: 'image',
+			images_file_types: 'jpg,svg,webp,png',
+			automatic_uploads: true
+		});
+	    
+	    tinymce.init({
+			selector: 'textarea#productIntrodution',
+			height: '400',
+			width: '100%',
+			plugins: 'quickbars table image link lists media help',
+			images_upload_url: '/file/uploads',
+			images_upload_base_path: '/',
+			toolbar: 'image',
+			images_file_types: 'jpg,svg,webp,png',
+			automatic_uploads: true
+		});
+	    
+	    tinymce.init({
+			selector: 'textarea#productOptionAllSpecifications',
+			height: '400',
+			width: '100%',
+			plugins: 'quickbars table image link lists media help',
+			images_upload_url: '/file/uploads',
+			images_upload_base_path: '/',
+			toolbar: 'image',
+			images_file_types: 'jpg,svg,webp,png',
+			automatic_uploads: true
+		});
+	    
+	    //Selector ở đây là class vì có nhiều rich text trùng tên. (edit list product Option trên 1 trang)
+	    tinymce.init({
+			selector: 'textarea.productOptionAllSpecifications',
+			height: '400',
+			width: '100%',
+			plugins: 'quickbars table image link lists media help',
+			images_upload_url: '/file/uploads',
+			images_upload_base_path: '/',
+			toolbar: 'image',
+			images_file_types: 'jpg,svg,webp,png',
+			automatic_uploads: true
+		});
+    });
+	 
+	</script>
+
+</body>
+
+</html>
