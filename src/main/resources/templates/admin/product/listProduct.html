@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" class="scroll-smooth dark" lang="en">
 
-<head th:replace="~{/fragments/_layout.html :: head}">
+<head th:replace="~{fragments/_layout.html :: head}">
 </head>
 
 <body class="bg-slate-100">
     <div class="app overflow-hidden">
         <!-- Arrow up -->
-        <aside th:replace="~{/fragments/_layout.html :: arrow-up}">
+        <aside th:replace="~{fragments/_layout.html :: arrow-up}">
         </aside>
         <div class="flex">
         <!-- Menu -->
-            <aside th:replace="~{/fragments/_layout.html :: menu}" class="mobile:hidden tablet:hidden">
+            <aside th:replace="~{fragments/_layout.html :: menu}" class="mobile:hidden tablet:hidden">
             </aside>
 
             <div class="w-full">
                 <!-- Header -->
-                <header th:replace="~{/fragments/_layout.html :: header}" class="bg-primary-color h-[300px]">
+                <header th:replace="~{fragments/_layout.html :: header}" class="bg-primary-color h-[300px]">
                 </header>
 
                 <!-- Main content -->
@@ -130,15 +130,15 @@
         </div>
 
         <!-- Footer -->
-        <footer  th:replace="~{/fragments/_layout.html :: footer}">
+        <footer  th:replace="~{fragments/_layout.html :: footer}">
         </footer>
     </div>
 
 	<!-- Load các hàm xử ly flash message -->
-	<script th:replace="~{/fragments/_layout.html :: script-flash-message}"></script>
+	<script th:replace="~{fragments/_layout.html :: script-flash-message}"></script>
 	
 	<!-- Load các hàm khởi tạo để tạo rich text -->
-	<script th:replace="~{/fragments/_layout.html :: script-rich-text}"></script>
+	<script th:replace="~{fragments/_layout.html :: script-rich-text}"></script>
 </body>
 
 </html>
